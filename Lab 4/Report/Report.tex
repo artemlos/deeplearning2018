@@ -1,0 +1,145 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{spverbatim}
+\title{DD2424 Lab 4}
+\author{Artem Los (arteml@kth.se)}
+\date{\today}
+
+
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{fancyvrb}
+\usepackage{spverbatim}
+
+\begin{document}
+
+\maketitle
+
+\section*{Vanilla RNN}
+
+\subsection*{Checking the gradients}
+In order to ensure that the analytical gradients are correct, they are compared with the numerical ones using the relative error metric. The result is summarized in Table \ref{RelError} below:
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{|l|l|}
+		\hline
+		Parameter & Relative error \\
+		\hline
+		b & 1.8659868439e-09 \\
+		c & 3.10398373834e-10\\
+		U & 3.96329829198e-09\\
+		W & 4.68942450973e-02\\
+		V & 7.86033249855e-09\\
+		\hline
+	\end{tabular}
+\caption{Relative error of between the numerical and analytical gradients.}
+\label{RelError}
+\end{figure}
+The $W$ has the highest relative error. When compared element by element, both the numerical and analytical one had mostly the same order of magnitude and similar values. Since the error decreased rapidly during training, reaching less then 43, we can be quite sure that the gradients are correct.
+
+\subsection*{Smooth error with 2 epochs}
+When training over the entire passage with 2 epochs and $\epsilon=10^{-4}$, the smooth error loss evolved as shown below. The final loss was $42.984$, which is lower than when training with $\epsilon=10^{-1}$ (i.e. $43.153$).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{loss-over-time-2epochs.png}
+	\caption{The smooth error, recorded every 100th iteration, when training over the entire text twice.}
+\end{figure} 
+
+\subsection*{Evoluation of the synthesized text}
+When the code was run with $\epsilon=10^{-4}$ for 100k iterations, the  following results were obtained (when 200 characters were sampled):
+\begin{spverbatim}
+Iteration: 0
+Smooth loss: [[ 109.85278789]]
+-ZF1zwiTSFn_TFFwgB1t^?YX2j-lE^DVfNa?39Tynoa!4B-.FKxaj:-?pwSA3vX9n6ZHg?CB??1SeyFqG22
+Ti?iHWJh3"i3tY2züeRsZAt0,2)
+r'Yp,HF};hWm)?D-f)z.pA0jb K(K/h_3Y_6JQ(rXkv4:iZaB,us_9 C,xTRkHpDwO.eM
+Ac,M06s?KV'DA zU)S9
+
+Iteration: 10000
+Smooth loss: [[ 53.20126954]]
+-ore manld courle, he fhov,e ga ped worfed erethe coun tortringond le the dlod therir hd acingecn fheurt thed manvoe coverl.  Find watld okors the nn dont es Apaun fos ans foam losee kodne thare nt le 
+
+Iteration: 20000
+Smooth loss: [[ 52.02812544]]
+- and , magu.d Worhond ha s sfowgainly il, wat pfatk sossrane borus we palt an thand it thin, an at is her thr mocl wive tho cor, one yor Hnile pnanwmoned it Fomnoubce ons fouron Plotid buth ny matt ho
+
+Iteration: 30000
+Smooth loss: [[ 52.06561312]]
+-wan Horrigarme ther har.W arbuchem oy wor ardertard a-aide wowr fag brames wame appruthe hid, and hot ot wande pizobey Nrer abully zthen.  Co slavon, ware tha was Dard apdeapny sbaire woum ha buramert
+
+Iteration: 40000
+Smooth loss: [[ 57.32117558]]
+-no kinge
+uthintid hind s ou undergeror of ou this int ht ermof the  t lce s at datd was gowt was hare, the se pemt ratpardemdarcedtharh inlenerte se koeghe
+bad;et roa them'le tif, he tipil ocereonebe
+
+Iteration: 50000
+Smooth loss: [[ 53.52204262]]
+-groog staoil.  Anty ton Herryingl.
+'" ou list ighe sitr.
+Wo hoole the wala deof, too herath serpelo beiccd the 
+Ye ullow iicht y oo'm undist us foud an lpaped sutilt Soul us locke wis My qfor ughis s
+
+Iteration: 60000
+Smooth loss: [[ 51.78217711]]
+-hiblly nureal soulloud psseroulin', rics abam, tha sand houd aod onss ppees to unling arstidruthin' eeting thiw breyor.  ousl, to siveas outly gow'ste sets was dent aomning his tarteit s ssan sainous,
+
+Iteration: 70000
+Smooth loss: [[ 50.40715341]]
+-htars, and caual undeusplamecit pavsindeid, timlernthasred noceedees andly glook ag thin, cpolley'swarr, moklinged gatren ancetsos.  Harry?  Nerned Mn foclaed dosthicap, ont enme domded fhishing at a.
+
+Iteration: 80000
+Smooth loss: [[ 51.31960037]]
+-himthe peyint Mr. Weasally he whith" wh, an andene" sang on arre'r.
+"Weis,: seed or oor"slwe'n Fredhe.. I golly, Weasbadyon."
+"xerey gat jrofeert ou'd eromeanly," gemtite," Harryingink, Goond Gootly n
+
+Iteration: 90000
+Smooth loss: [[ 51.3390017]]
+- ow whro ast anof Runt wasthengirl ont Mud te thouls Mnsatide, Harry and normy a dow lomk," sisd of hire te perwel,," taid Harry soud ack, ailis tatnstorond."
+je he mingemadon wor'nd the kay harg tiy,
+
+Iteration: 100000
+Smooth loss: [[ 52.27351264]]
+- efFrey of mad it of rug the.
+"The a doun,"
+Broon.
+.
+"Theolaving anta thamd ow andiceten tocbet bethtoblaplst, appealy." Ohe n- Dond stea font."
+Hardey harptipadon hay tiven vat in thep hevontly.  Aim	
+\end{spverbatim}
+
+\subsection*{Best model}
+When a passage of 1000 chars was sampled from the best model (i.e. the one with smooth error $42.984$), the following text was obtained:
+
+\begin{spverbatim}
+You jorten was gaid fohinf shink alw haarys of sint blet," said Hermione in the roban-wand llaibsupe what,"
+"I do me"
+Harrifpaster.
+"Voldobed Furgh dry frankd, knoum srmackbang, Voldemsoughe to at Cown the when wheld sien low. I kay up," said Gring in thite helseded of thilled to durinst he haruped tank the citthen, "
+"Ind nelghtion teld, ind," haden," said, as miscely frentlight.  The fige?  Harry, puttind ivel thour.  Highht Harry were thanky't oresting in unce, Dig in the haddeath the parear grible, Anmo fin, shicl some them . . ." said Hoomien mos and's mid.  Gallexting whit' ald his binteyss; a turked not," said. . ..."
+"Theren't the mase to him.  Ce hut fise-lnom the will ofuesive yeurmyth the lione sarty axintidlan to oum him.
+"Ton't housled behand thes quied the wis, sham so farky, wonf he with the Loodevmo, ix, eat on Sire falurout of proff poove and shodgens as and of oueld, and youn's over the riggur, he taustling stupt to innick," "ith snew, ry to replest you, is had, so.  "
+\end{spverbatim}
+\phantom\newline
+And, just for fun, let's generate one more:
+\begin{spverbatim}
+You dom the" Harry, we't atpers."
+"heved Cedrme was ann's leatly on the eden the thim jost theig all knevel he ham.  But gowly vered."
+"Thtieks Harry nother at him ond Krumboim, and Grongering Mig scortereath the Rind sliboulinimem, bewing fe at the loownt.  Hogrings spaited that no wern to the Galldat ther had mumboud the did becore ght by out the cagicl te, bin to have proit. Bect Harry, mefor?"  Bry.  Firy st on him poterey.
+"Con the unzars; I winh sour his still.
+"He all who alf himase.."  suunen and her, think Charche bakis."
+"Hossmongers .  whilld-ency stor that courtaw at nern - babnilly wanither, in same ne was, they houed unded I - "I theim ngut and wiquill him wisly wouldy," "Your sharey the d, his morturiebbuened  Celd,"  Harry? " hancee.. "Thire.  Hagr yCurmed tered baited at that him looking cont of thought headry they raughed to neetled when terhee."
+Theazed nve timpoun Voldyoug, and He would eyes, theret, the him and Five bet Ron tambond jusslyy.
+"But turs a curne.  I de 
+\end{spverbatim}
+
+\end{document}
