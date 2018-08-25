@@ -9,7 +9,7 @@ The working code (assuming the data set is placed in the right folder) is in `As
 * `Assignment3.py` - mix of methods that were used during the assignment (for example, to search for hyper parameters, testing gradients, etc).
 
 ## Notes when using batchnorm version
-Although it is possible to simply run the fit method and then test it on either the test or validation sets (which will use the exponential average obtained from training), I have noticed that much better results were obtained (factor 0.2-0.3 better) when computing the `mean` and `variance` from the training set directly and use it on the test and validation sets
+Although it is possible to simply run the fit method and then test it on either the test or validation sets (which will use the exponential average obtained from training), I have noticed that much better results were obtained (factor 0.2-0.3 better) when computing the `mean` and `variance` of the training set directly and use it on the test and validation sets
 
 ```
 # acc = exp average
