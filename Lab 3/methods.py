@@ -139,7 +139,7 @@ class KLayerNetwork():
         if self.batch_norm:
             dW, db = self.compute_gradients_batch_norm(X_batch, Y_batch)
         else:
-            dW, db = self.compute_gradients(X_batch, Y_batch); #self.compute_grads_num_slow(X_batch, Y_batch)
+            dW, db = self.compute_gradients(X_batch, Y_batch);
                 
         if self.rho != None:
             for i in range(k+1):
@@ -325,40 +325,6 @@ class KLayerNetwork():
         #    self.__dict__[name][layer] = new_value
         #else:
         self.__dict__[name][layer] = alpha*self.__dict__[name][layer] + (1-alpha)*new_value
-        
-
-    def compute_grads_num_slow(self, X, y, h = 0.001):
-        
-        dLdW = np.zeros((self.K, self.d))
-        dLdb = np.zeros((1, self.K))
-        
-
-        for i in range(self.b.shape[1]):
-            b_old = np.copy(self.b)
-            
-            self.b[i] = self.b[i] - h;
-            c1 = self.j_cost_func(X, y)
-            self.b = np.copy(b_old)
-            self.b[i] = self.b[i] + h;
-            c2 = self.j_cost_func(X, y)
-            
-            self.b = np.copy(b_old)
-            dLdb[i] = (c2-c1) / (2*h)
-            
-        for i in range(np.size(dLdW)):
-            W_old = np.copy(self.W)
-            
-            self.W.itemset(i, self.W.item(i) - h);
-            c1 = self.j_cost_func(X, y)
-            self.W = np.copy(W_old)
-            self.W.itemset(i, self.W.item(i) + h);
-            c2 = self.j_cost_func(X, y)
-            
-            self.W = np.copy(W_old)
-            dLdW.itemset(i, (c2-c1) / (2*h))
-        
-        return (dLdW, dLdb);
-            
     
     def evaluate_classifier(self, X):
         res, _, _ = self.evaluate_classifier_with_activations(X)
